@@ -14,8 +14,41 @@ public class User implements UserDetails{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "first_name")
+    private String first_name;
+
+    @Column(name = "last_name")
+    private String last_name;
+
+    @Column(name = "email")
+    private String email;
+
+    public String getLast_name() {
+        return last_name;
+    }
+
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    @Column(name = "age")
+    private int age;
 
     @Column(name = "password")
     private String password;
@@ -30,9 +63,13 @@ public class User implements UserDetails{
 
     public User() {}
 
-    public User(Long id, String name, String password, String passwordConfirm, List<Role> roles) {
+    public User(Long id, String first_name, String last_name, String email,
+                int age, String password, String passwordConfirm, List<Role> roles) {
         this.id = id;
-        this.name = name;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.email = email;
+        this.age = age;
         this.password = password;
         this.passwordConfirm = passwordConfirm;
         this.roles = roles;
@@ -46,12 +83,12 @@ public class User implements UserDetails{
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirst_name() {
+        return first_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
     }
 
     public void setPassword(String password) {
@@ -81,12 +118,12 @@ public class User implements UserDetails{
 
     @Override
     public String getUsername() {
-        return getName();
+        return getFirst_name();
     }
 
     @Override
     public String toString() {
-        return "Name: " + name + " ";
+        return "Name: " + first_name + " ";
     }
 
     @Override

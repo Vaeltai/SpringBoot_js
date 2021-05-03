@@ -23,7 +23,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void update(Long id, User user) {
         User userForUpdate = show(id);
-        userForUpdate.setName(user.getName());
+        userForUpdate.setFirst_name(user.getFirst_name());
         userForUpdate.setRoles(user.getRoles());
         if(!Objects.equals(show(id).getPassword(), bCryptPasswordEncoder.encode(user.getPassword()))){
             userForUpdate.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -49,7 +49,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserByUsername(String username){
-        String hql = "FROM User where name=:username";
+        String hql = "FROM User where first_name=:username";
         Query query = em.createQuery(hql, User.class)
                 .setParameter("username", username);
         return (User) query.getResultList().get(0);
