@@ -122,11 +122,6 @@ public class User implements UserDetails{
     }
 
     @Override
-    public String toString() {
-        return "Name: " + first_name + " ";
-    }
-
-    @Override
     public boolean isAccountNonExpired() {
         return true;
     }
@@ -151,6 +146,18 @@ public class User implements UserDetails{
         return getRoles();
     }
 
+    @Override
+    public String toString() {
+        return email + "        with roles: "
+                + this.rolesToSting().toString();
+    }
 
-
+    public StringBuilder rolesToSting(){
+        StringBuilder sb = new StringBuilder(" ");
+        for (Role role:roles) {
+            sb.append(role.toString());
+            sb.append(" ");
+        }
+        return sb;
+    }
 }
