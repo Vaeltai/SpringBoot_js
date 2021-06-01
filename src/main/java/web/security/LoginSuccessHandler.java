@@ -27,10 +27,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                                         Authentication authentication) throws IOException, ServletException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 //        if (roles.contains("ROLE_ADMIN")) {
-        if (roles.contains("ADMIN")) {
+        if (roles.contains("ROLE_ADMIN")) {
             httpServletResponse.sendRedirect("/admin");
 //        } else if (roles.contains("ROLE_USER")) {
-        } else if (roles.contains("USER")) {
+        } else if (roles.contains("ROLE_USER")) {
             long id =((User) (userDetailsService.loadUserByUsername(authentication.getName()))).getId();
             httpServletResponse.sendRedirect("/user/" + id);
         }

@@ -22,6 +22,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void update(Long id, User user) {
+//        em.merge(user);
         User userForUpdate = show(id);
         userForUpdate.setFirst_name(user.getFirst_name());
         userForUpdate.setRoles(user.getRoles());
