@@ -28,7 +28,7 @@ public class LoginController {
     }
 
     @PatchMapping(value = "/{id}")
-    public String update(@ModelAttribute("user") User user, @PathVariable("id") long id){
+    public String update(@ModelAttribute("user") User user){
         userService.update(user.getId(), user);
         return "redirect:/admin";
     }
