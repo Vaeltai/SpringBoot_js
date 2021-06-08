@@ -146,8 +146,7 @@ public class User implements UserDetails{
         return getRoles();
     }
 
-    @Override
-    public String toString() {
+    public String toStringRoleAndEmail() {
         return email + "        with roles: "
                 + this.rolesToSting().toString();
     }
@@ -159,5 +158,16 @@ public class User implements UserDetails{
             sb.append(" ");
         }
         return sb;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                '}';
     }
 }

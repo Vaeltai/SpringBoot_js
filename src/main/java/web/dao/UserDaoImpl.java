@@ -21,14 +21,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void update(Long id, User user) {
-//        em.merge(user);
-        User userForUpdate = show(id);
-        userForUpdate.setFirst_name(user.getFirst_name());
-        userForUpdate.setRoles(user.getRoles());
-        if(!Objects.equals(show(id).getPassword(), bCryptPasswordEncoder.encode(user.getPassword()))){
-            userForUpdate.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+    public void update(User user) {
+        String oldPass = show(user.getId()).getPassword();
+        String newPass = user.getPassword();
+        if(!Objects.equals(oldPass, bCryptPasswordEncoder.encode(newPass))){
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         }
+        em.merge(user);
     }
 
     @Override
@@ -37,6 +36,8 @@ public class UserDaoImpl implements UserDao {
         Query query = em.createQuery(hql, User.class);
         return query.getResultList();
     }
+
+
 
     @Override
     public void remove(long id) {

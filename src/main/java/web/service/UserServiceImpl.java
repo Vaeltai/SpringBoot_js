@@ -31,10 +31,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(long id, User user) {
-        userDao.update(id, user);
-    }
+//    public void update(long id, User user) {
+//        userDao.update(id, user);
+//    }
 
+    public void update(User user) {
+        userDao.update(user);
+    }
     @Override
     public void remove(long id) {
         userDao.remove(id);
