@@ -1,5 +1,6 @@
 package web.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
@@ -14,21 +15,66 @@ public class User implements UserDetails{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "first_name")
-    private String first_name;
+    @Column(name = "firstname")
+    private String firstName;
 
-    @Column(name = "last_name")
-    private String last_name;
+    @Column(name = "lastname")
+    private String lastName;
 
     @Column(name = "email")
     private String email;
 
-    public String getLast_name() {
-        return last_name;
+    @Column(name = "age")
+    private int age;
+
+    @Column(name = "password")
+    private String password;
+
+    @Transient
+    private String passwordConfirm;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonProperty("roles")
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
+
+    public User() {}
+
+    public User(Long id, String firstName, String lastName, String email,
+                int age, String password, String passwordConfirm, List<Role> roles) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.age = age;
+        this.password = password;
+        this.passwordConfirm = passwordConfirm;
+        this.roles = roles;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -45,50 +91,6 @@ public class User implements UserDetails{
 
     public void setAge(int age) {
         this.age = age;
-    }
-
-    @Column(name = "age")
-    private int age;
-
-    @Column(name = "password")
-    private String password;
-
-    @Transient
-    private String passwordConfirm;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
-
-    public User() {}
-
-    public User(Long id, String first_name, String last_name, String email,
-                int age, String password, String passwordConfirm, List<Role> roles) {
-        this.id = id;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.email = email;
-        this.age = age;
-        this.password = password;
-        this.passwordConfirm = passwordConfirm;
-        this.roles = roles;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirst_name() {
-        return first_name;
-    }
-
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
     }
 
     public void setPassword(String password) {
@@ -118,7 +120,7 @@ public class User implements UserDetails{
 
     @Override
     public String getUsername() {
-        return getFirst_name();
+        return getFirstName();
     }
 
     @Override
@@ -148,24 +150,24 @@ public class User implements UserDetails{
 
     public String toStringRoleAndEmail() {
         return email + "        with roles: "
-                + this.rolesToSting().toString();
+                + this.rolesToSting();
     }
 
-    public StringBuilder rolesToSting(){
+    public String rolesToSting(){
         StringBuilder sb = new StringBuilder(" ");
         for (Role role:roles) {
-            sb.append(role.toString());
+            sb.append(role.getName());
             sb.append(" ");
         }
-        return sb;
+        return sb.toString();
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
+                ", firstname='" + firstName + '\'' +
+                ", lastname='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
                 '}';

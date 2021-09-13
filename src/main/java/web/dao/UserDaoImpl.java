@@ -17,6 +17,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void saveUser(User user){
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+
         em.persist(user);
     }
 
@@ -38,11 +39,11 @@ public class UserDaoImpl implements UserDao {
     }
 
 
-
     @Override
     public void remove(long id) {
         em.remove(show(id));
     }
+
 
     @Override
     public User show(long id) {
@@ -51,7 +52,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserByUsername(String username){
-        String hql = "FROM User where first_name=:username";
+        String hql = "FROM User where firstName=:username";
         Query query = em.createQuery(hql, User.class)
                 .setParameter("username", username);
         return (User) query.getResultList().get(0);

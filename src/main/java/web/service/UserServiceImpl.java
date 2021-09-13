@@ -5,6 +5,7 @@ import web.dao.UserDao;
 import web.model.User;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -31,13 +32,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-//    public void update(long id, User user) {
-//        userDao.update(id, user);
-//    }
-
     public void update(User user) {
         userDao.update(user);
     }
+
     @Override
     public void remove(long id) {
         userDao.remove(id);

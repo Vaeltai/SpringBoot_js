@@ -1,5 +1,6 @@
 package web.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -10,44 +11,46 @@ import web.service.RoleService;
 import web.service.UserService;
 
 @Controller
-@RequestMapping("/admin")
-public class LoginController {
+@RequestMapping("")
+public class AdminController {
     private UserService userService;
     private RoleService roleService;
 
     @Autowired
-    public LoginController(UserService userService, RoleService roleService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
 
-    @GetMapping
-    public String index1(@ModelAttribute User user, Model model) {
+    @GetMapping(value = "/admin")
+    public String index1(Model model) {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("currentUser", currentUser);
-        model.addAttribute("users", userService.getListUsers());
-        model.addAttribute("addUser", new User());
-        model.addAttribute("newUser", new User());
-        model.addAttribute("roles", roleService.getRoles());
-        return "index1";
+        return "adminPage";
     }
 
-    @PostMapping("/new")
-    public String post(@ModelAttribute("newUser") User user){
-        userService.addUser(user);
-        return "redirect:/admin";
-    }
+//    @PostMapping("/admin/new")
+//    public String post(@ModelAttribute("newUser") User user){
+//        userService.addUser(user);
+//        return "redirect:/admin";
+//    }
 
-    @PatchMapping(value = "/{id}")
-    public String update(@ModelAttribute("updateUser") User user,
-                         @PathVariable("id") Long id){
+    @PatchMapping(value = "/admin/edit")
+    public String update(@ModelAttribute("updateUser") User user){
         userService.update(user);
         return "redirect:/admin";
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/delete/{id}")
     public String delete(@ModelAttribute("userForDelete") User user) {
         userService.remove(user.getId());
         return "redirect:/admin";
+    }
+
+    @GetMapping("/user")
+    public String showUser(Model model) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("currentUser", userService.show(currentUser.getId()));
+        return "/userPage";
     }
 }
