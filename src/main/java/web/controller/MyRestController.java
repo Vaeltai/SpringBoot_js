@@ -1,6 +1,8 @@
 package web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import web.service.RoleService;
@@ -20,28 +22,35 @@ public class MyRestController {
     }
 
     @GetMapping("/admin")
-    public List<User> usersList() {
-        return userService.getListUsers();
+    public ResponseEntity<List<User>> usersList() {
+        return userService.getListUsers() != null &&  !userService.getListUsers().isEmpty()
+                ? new ResponseEntity<>(userService.getListUsers(), HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable Integer id) {
-        return userService.show(id);
+    public ResponseEntity<User>  getUser(@PathVariable Integer id) {
+        return userService.show(id) != null
+                ? new ResponseEntity<>(userService.show(id), HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/admin/new")
-    public void addUser(@RequestBody User user){
+    public ResponseEntity<Void> addUser(@RequestBody User user){
         userService.addUser(user);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/admin/edit")
-    public void update(@RequestBody User user){
+    public ResponseEntity<Void> update(@RequestBody User user){
         userService.update(user);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/admin/delete/{id}")
-    public void delete(@PathVariable Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         userService.remove(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
